@@ -1,0 +1,25 @@
+import os
+from PIL import Image
+import time
+import datetime as dt
+def resize_img(img_in):
+    long_size = 500
+    img = Image.open(img_in)
+    if img.size[0] > img.size[1]:
+        pct = (long_size/float(img.size[0]))
+        short_side = int((float(img.size[1])*float(pct)))
+        img = img.resize((long_size,short_side), Image.ANTIALIAS)
+    else:
+        pct = (long_size/float(img.size[1]))
+        short_side = int((float(img.size[0])*float(pct)))
+        img = img.resize((short_side,long_size), Image.ANTIALIAS)
+    return(img)
+count = 1
+for filename in sorted(os.listdir()):
+    try:
+        display(resize_img(filename))
+        print("Photo " + str(count) + " - " + filename + '   ')
+        print(dt.datetime.fromtimestamp(os.path.getmtime(filename)).strftime("%Y.%m.%d %a, %H:%M %p"))
+        count += 1
+    except:
+        pass
